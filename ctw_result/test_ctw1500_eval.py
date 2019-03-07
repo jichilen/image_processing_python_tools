@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os, shutil, sys
+
 # import voc_eval_polygon_sympy
 
 def add_path(path):
@@ -11,8 +12,8 @@ def add_path(path):
 root = './'
 lib_path = os.path.join(root, 'lib')
 add_path(lib_path)
-
 from voc_eval_polygon import voc_eval_polygon
+
 
 detpath = 'result_out/{:s}.txt'
 
