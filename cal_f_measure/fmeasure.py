@@ -99,7 +99,7 @@ def det_eval(gt_dir, dt_parent,save_parent):
     nothing returned
   """
   # load all groundtruths into a dict of {<image-name>: <list-of-polygons>}
-  
+
   res_flag = False
   n_gt = 0
   all_gt = {}
@@ -143,7 +143,7 @@ def det_eval(gt_dir, dt_parent,save_parent):
       # find corresponding gt file
       fname = basename(dt_file)
       key = p.match(fname).group(1)
-      
+
       if key not in all_gt:
         print('Result %s not found in groundtruths! This file will be ignored')
         continue
@@ -195,7 +195,7 @@ def det_eval(gt_dir, dt_parent,save_parent):
     sort_idx = np.argsort(all_dt_scores)[::-1] # sort in descending order
     all_dt_match = all_dt_match[sort_idx]
     all_dt_scores = all_dt_scores[sort_idx]
-    
+
     n_pos = np.cumsum(all_dt_match)
     n_dt = np.arange(1, len(all_dt_match)+1)
     precision = n_pos.astype(np.float) / n_dt.astype(np.float)
@@ -203,7 +203,7 @@ def det_eval(gt_dir, dt_parent,save_parent):
     eps = 1e-9
     fmeasure = 2.0 / ((1.0 / (precision + eps)) + (1.0 / (recall + eps)))
 
-    
+
     rec = n_pos / float(n_gt)
     prec = n_pos / np.maximum(n_dt, np.finfo(np.float64).eps)
     ap = voc_ap(rec, prec)
@@ -215,7 +215,7 @@ def det_eval(gt_dir, dt_parent,save_parent):
   else:
     # find maximum fmeasure
     max_idx = np.argmax(fmeasure)
-    
+
     eval_results = {
       'fmeasure': fmeasure[max_idx],
       'precision': precision[max_idx],
@@ -268,7 +268,7 @@ def det_eval(gt_dir, dt_parent,save_parent):
     src_dir = os.path.split(dst_dir)[1]
     zip_dir = shutil.make_archive(dst_dir, 'zip', src_root, src_dir)
     res_flag = True
-    return [res_flag, '', eval_results['fmeasure'],eval_results['precision'],eval_results['recall'], 
+    return [res_flag, '', eval_results['fmeasure'],eval_results['precision'],eval_results['recall'],
     eval_results['ap'],zip_dir]
 
 
