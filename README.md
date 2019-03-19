@@ -18,3 +18,7 @@ also some useful tips for voc image genaration
 tools to cal f-measure for ctw dataset, it is the adaptive version from voc dataset
 
 and it is modified by [Yuliang-Liu](https://github.com/Yuliang-Liu/Curve-Text-Detector/tree/master/tools)
+
+## cal_mask_fmeasure
+tools to calculate f-measure for mask regions, it is a modification from ctw_result
+
