@@ -117,7 +117,7 @@ coco存储数据用的是一个字典字典里面有三个键：`"images", "cate
 >		id:
 >		image_id:
 >		iscrowd:
->       	segmentation: #[[x,y,x,y]]
+>   segmentation: #[[x,y,x,y]]
 >
 >		]
 
