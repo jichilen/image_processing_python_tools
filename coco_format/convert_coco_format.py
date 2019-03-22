@@ -90,8 +90,8 @@ for ni,imn in enumerate(tqdm.tqdm(imnames,ascii=True)):
 data_v['images']= images
 data_v['categories']=categories
 data_v['annotations']=annotations
-with open(json_v_out,'w',ensure_ascii=False,indent=4)as f:
-    json.dump(data_v,f)
-with open(json_t_out,'w',ensure_ascii=False,indent=4)as f:
-    json.dump(data_t,f)
+with open(json_v_out,'w')as f:
+    json.dump(data_v,f,ensure_ascii=False,indent=4)
+with open(json_t_out,'w')as f:
+    json.dump(data_t,f,ensure_ascii=False,indent=4)
 
