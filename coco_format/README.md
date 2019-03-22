@@ -3,9 +3,10 @@
 
 #### VOC数据格式
 
+```
 > +VOCdevkit
 >
->     +VOC2012
+>    +VOC2012
 >
 >       +JPEGImages
 >
@@ -14,7 +15,7 @@
 >       +ImageSets
 >
 >         +Segmentation
-
+```
 一个voc的数据目录如图所示，SegmentationClass里面存放的是分割结果，里面的图片都是**8-bit伪彩色图**，也就是说正常的读取我们读出来的是**24-bit RGB图**，但是其实这个图片只是一个8-bit的图片，进行了一次色彩的映射所以看起来给人一种彩色图的感觉
 
 ```python
@@ -79,6 +80,7 @@ coco存储数据用的是一个字典字典里面有三个键：`"images", "cate
 
 具体的格式如下图所示
 
+```
 >images:
 >
 >	categories:
@@ -120,7 +122,7 @@ coco存储数据用的是一个字典字典里面有三个键：`"images", "cate
 >   segmentation: #[[x,y,x,y]]
 >
 >		]
-
+```
 
 ```python
  import numpy as np
