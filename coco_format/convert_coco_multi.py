@@ -9,6 +9,7 @@ import pickle
 import tqdm
 import random
 from multiprocessing import Pool
+import multiprocessing
 import time
 
 def checkl(s,height,width):
@@ -20,9 +21,7 @@ def checkl(s,height,width):
         s[i,1]=max(0,s[i,1])
     return s
 
-annotations=[]
-images=[]
-
+f=open('image.json','w')
 
 def prepare_one_img(ni,imn,res,iid,anid):
     image={}
@@ -34,7 +33,8 @@ def prepare_one_img(ni,imn,res,iid,anid):
     image[u'height']=im.height
     image[u'width']=im.width
     image[u'id']=iid
-    images.append(image)
+    #print(image)
+    images.put(image)
     for nj in range(res.shape[2]):
         # check whether data is ignored
 
@@ -61,7 +61,7 @@ def prepare_one_img(ni,imn,res,iid,anid):
         annotation['image_id'] = iid
         annotation['iscrowd'] = 0
         annotation['segmentation'] = [segmentation.reshape((-1)).tolist()]
-        annotations.append(annotation)
+        annotations.put(annotation)
 
 
 if __name__ == '__main__':
@@ -89,7 +89,9 @@ if __name__ == '__main__':
     random.shuffle(imnames)
     #with open(train_txtdir)as f:
     #    gts = json.load(f)
-
+    m = multiprocessing.Manager()
+    annotations=m.Queue()
+    images=m.Queue()
     iid=0
     anid=0
     flag=0
@@ -104,14 +106,20 @@ if __name__ == '__main__':
         if len(res.shape)<3:
             res=res[...,np.newaxis]
         #prepare_one_img(ni,imn,res,iid,anid)
-        p.apply_async(prepare_one_img,(ni,imn,res,iid,anid))
+        p.apply_async(prepare_one_img,(ni,imn,res,iid,anid,))
         iid+=1
         anid+=res.shape[2]
     p.close()
     p.join()
-    data_v['images']= images
+    ims=[]
+    anns=[]
+    while images.empty()==False:
+        ims.append(images.get())
+    while annotations.empty()==False:
+        anns.append(annotations.get())
+    data_v['images']= ims
     data_v['categories']=categories
-    data_v['annotations']=annotations
+    data_v['annotations']=anns
     with open(json_v_out,'w')as f:
         json.dump(data_v,f,ensure_ascii=False,indent=4)
     with open(json_t_out,'w')as f:
