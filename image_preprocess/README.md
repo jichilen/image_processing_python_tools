@@ -14,10 +14,18 @@ and maybe pycocotools
 ## Usage
 all codes are write in numpy arrays, taking some special situation into account
 
+till now, the code can do basic **Data Augmentation** for images with **box** and **segmentation** annotations in data_type numpy.arrays, so this can be easyly expanded to all deeplearning frameworks.
+
+- [x] Distortion(random change with brightness, contrast, saturation and hue)
+- [x] Expand(random padding images in corlor (r,g,b))
+- [x] **Random_crop**(random crop with box and segmentations) 
+- [ ] Scale
+- [ ] Normalization
+
 the code should work well on datasets with bbox and segmentation annotations, here is an example in ctw1500,
 all the annotations in this datasets has 14 points for segmentations, but the code should work well despite of the numbers of the points
 
-basic uses seen from the test examples in Preprocesser.py
+basic uses seen from the test examples in [Preprocesser.py]( https://github.com/jichilen/image_processing_python_tools/blob/69de0a729cd66000335e0d52d974673b2cfc3fea/image_preprocess/Preprocesser.py#L262)
 
 ## Examples
 <img src='./demo/a0.jpg' style="zoom:100%">
@@ -30,3 +38,7 @@ basic uses seen from the test examples in Preprocesser.py
 <img src='./demo/a3_0.jpg' style="zoom:100%">
 <img src='./demo/a4.jpg' style="zoom:100%">
 <img src='./demo/a4_0.jpg' style="zoom:100%">
+<img src='./demo/a5.jpg' style="zoom:100%">
+<img src='./demo/a5_0.jpg' style="zoom:100%">
+<img src='./demo/a18.jpg' style="zoom:100%">
+<img src='./demo/a18_0.jpg' style="zoom:100%">
