@@ -21,9 +21,12 @@ basic uses seen from the test examples in Preprocesser.py
 
 ## Examples
 <img src='./demo/a0.jpg' style="zoom:100%">
-<img src='./demo/a0_0.jpg.jpg' style="zoom:100%">
+<img src='./demo/a0_0.jpg' style="zoom:100%">
 <img src='./demo/a1.jpg' style="zoom:100%">
-<img src='./demo/a1_0.jpg.jpg' style="zoom:100%">
+<img src='./demo/a1_0.jpg' style="zoom:100%">
 <img src='./demo/a2.jpg' style="zoom:100%">
-<img src='./demo/a2_0.jpg.jpg' style="zoom:100%">
-
+<img src='./demo/a2_0.jpg' style="zoom:100%">
+<img src='./demo/a3.jpg' style="zoom:100%">
+<img src='./demo/a3_0.jpg' style="zoom:100%">
+<img src='./demo/a4.jpg' style="zoom:100%">
+<img src='./demo/a4_0.jpg' style="zoom:100%">
