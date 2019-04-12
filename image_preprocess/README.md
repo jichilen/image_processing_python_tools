@@ -25,7 +25,7 @@ till now, the code can do basic **Data Augmentation** for images with **box** an
 the code should work well on datasets with bbox and segmentation annotations, here is an example in ctw1500,
 all the annotations in this datasets has 14 points for segmentations, but the code should work well despite of the numbers of the points
 
-basic uses seen from the test examples in [Preprocesser.py]( https://github.com/jichilen/image_processing_python_tools/blob/69de0a729cd66000335e0d52d974673b2cfc3fea/image_preprocess/Preprocesser.py#L262)
+basic uses seen from the test examples in [Preprocesser.py]( https://github.com/jichilen/image_processing_python_tools/image_preprocess/main.py#L12)
 
 ## Examples
 <img src='./demo/a0.jpg' style="zoom:100%">
@@ -40,5 +40,5 @@ basic uses seen from the test examples in [Preprocesser.py]( https://github.com/
 <img src='./demo/a4_0.jpg' style="zoom:100%">
 <img src='./demo/a5.jpg' style="zoom:100%">
 <img src='./demo/a5_0.jpg' style="zoom:100%">
-<img src='./demo/a18.jpg' style="zoom:100%">
-<img src='./demo/a18_0.jpg' style="zoom:100%">
+<img src='./demo/a6.jpg' style="zoom:100%">
+<img src='./demo/a6_0.jpg' style="zoom:100%">

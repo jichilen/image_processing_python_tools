@@ -14,6 +14,7 @@ import cv2
 from PIL import Image
 from shapely.geometry import Polygon
 
+
 def bbox_overlaps(bboxes1, bboxes2, mode='iou'):
     """Calculate the ious between each bbox of bboxes1 and bboxes2.
 
@@ -75,14 +76,15 @@ class PhotoMetricDistortion(object):
         self.hue_delta = hue_delta
 
     def __call__(self, img, boxes, segments, labels):
-        '''
-        get image distortion results when call the object
-
-        :param img:
-        :param boxes:
-        :param labels:
+        """
+        apply transform when calling
+        :param img: numpy.ndarray,(h,w,c)
+        :param boxes: numpy.ndarray,(n,4), x1,y1,x2,y2
+        :param segments: list(list),(n)(x),x is variant
+        :param labels: numpy.ndarray,(n)
         :return:
-        '''
+        """
+
         # random brightness
         if random.randint(2):
             delta = random.uniform(-self.brightness_delta,
@@ -131,7 +133,13 @@ class PhotoMetricDistortion(object):
 
 class Expand(object):
 
-    def __init__(self, mean=(0, 0, 0), to_rgb=True, ratio_range=(1, 4)):
+    def __init__(self, mean=(0, 0, 0), to_rgb=True, ratio_range=(1, 2)):
+        '''
+
+        :param mean: background color for expand, defaul in gbr order
+        :param to_rgb: whether to use rgb order
+        :param ratio_range: scale fractor for expanding
+        '''
         if to_rgb:
             self.mean = mean[::-1]
         else:
@@ -139,6 +147,14 @@ class Expand(object):
         self.min_ratio, self.max_ratio = ratio_range
 
     def __call__(self, img, boxes, segments, labels):
+        '''
+        apply transform when calling
+        :param img: numpy.ndarray,(h,w,c)
+        :param boxes: numpy.ndarray,(n,4), x1,y1,x2,y2
+        :param segments: list(list),(n)(x),x is variant
+        :param labels: numpy.ndarray,(n)
+        :return:
+        '''
         if random.randint(2):
             return img, boxes, segments, labels
 
@@ -164,11 +180,24 @@ class RandomCrop(object):
     def __init__(self,
                  min_ious=(0.1, 0.3, 0.5, 0.7, 0.9),
                  min_crop_size=0.3):
+        '''
+        # TODO: some special change should do to change this iou?
+        :param min_ious: iou threshold for crop-img and gt-box
+        :param min_crop_size: minimum cropsize for croping
+        '''
         # 1: return ori img
         self.sample_mode = (1, *min_ious, 0)
         self.min_crop_size = min_crop_size
 
     def __call__(self, img, boxes, segments, labels):
+        '''
+        apply transform when calling
+        :param img: numpy.ndarray,(h,w,c)
+        :param boxes: numpy.ndarray,(n,4), x1,y1,x2,y2
+        :param segments: list(list),(n)(x),x is variant
+        :param labels: numpy.ndarray,(n)
+        :return:
+        '''
         h, w, c = img.shape
         while True:
             mode = random.choice(self.sample_mode)
@@ -208,18 +237,18 @@ class RandomCrop(object):
                 # boxes[:, 2:] = boxes[:, 2:].clip(max=patch[2:])
                 # boxes[:, :2] = boxes[:, :2].clip(min=patch[:2])
                 # boxes -= np.tile(patch[:2], 2)
-                boxes=[]
+                boxes = []
                 out_segments = []
-                out_labels=[]
-                for j,segment in enumerate(segments):
+                out_labels = []
+                for j, segment in enumerate(segments):
                     if not mask[j]:
                         continue
                     segment = np.array(segment).reshape(-1, 2)
-                    segment=Polygon(segment)
-                    bound=patch.copy()
-                    bound=bound+np.array([1,1,-1,-1])
-                    bound=np.vstack((bound[[0,2,2,0]],bound[[1,1,3,3]])).transpose()
-                    bound=Polygon(bound)
+                    segment = Polygon(segment)
+                    bound = patch.copy()
+                    bound = bound + np.array([1, 1, -1, -1])
+                    bound = np.vstack((bound[[0, 2, 2, 0]], bound[[1, 1, 3, 3]])).transpose()
+                    bound = Polygon(bound)
                     segment = bound.intersection(segment)
                     try:
                         segment = np.array(segment.exterior.coords)
@@ -228,22 +257,91 @@ class RandomCrop(object):
                         continue
 
                     segment -= patch[:2]
-                    x1,y1=np.min(segment,0)
-                    x2,y2=np.max(segment,0)
-                    boxes.append([x1,y1,x2,y2])
+                    x1, y1 = np.min(segment, 0)
+                    x2, y2 = np.max(segment, 0)
+                    boxes.append([x1, y1, x2, y2])
                     out_labels.append(labels[j])
                     out_segments.append(list(segment.reshape(-1)))
-                boxes=np.array(boxes).astype(np.int32)
+                boxes = np.array(boxes).astype(np.int32)
                 return img, boxes, out_segments, np.array(out_labels)
+
+
+class Scale:
+    # TODO:Maybe randomn scale is need? or be replaced by padding with scale
+    pass
+
+
+class RandomRotate:
+    def __init__(self, angles=[0, 90, 180, 270]):
+        self.sample_mode = angles
+
+    def __call__(self, img, boxes, segments, labels):
+        '''
+        apply transform when calling
+        :param img: numpy.ndarray,(h,w,c)
+        :param boxes: numpy.ndarray,(n,4), x1,y1,x2,y2
+        :param segments: list(list),(n)(x),x is variant
+        :param labels: numpy.ndarray,(n)
+        :return:
+        '''
+        mode = random.choice(self.sample_mode)
+        if mode == 0:
+            return img, boxes, segments, labels
+        # TODO: all of the images should be included in the rotated image
+        (h, w) = img.shape[:2]
+        (cX, cY) = (w // 2, h // 2)
+        # grab the rotation matrix (applying the negative of the
+        # angle to rotate clockwise), then grab the sine and cosine
+        # (i.e., the rotation components of the matrix)
+        M = cv2.getRotationMatrix2D((cX, cY), -mode, 1.0)
+        cos = np.abs(M[0, 0])
+        sin = np.abs(M[0, 1])
+        # compute the new bounding dimensions of the image
+        nW = int((h * sin) + (w * cos))
+        nH = int((h * cos) + (w * sin))
+        # adjust the rotation matrix to take into account translation
+        M[0, 2] += (nW / 2) - cX
+        M[1, 2] += (nH / 2) - cY
+        # perform the actual rotation and return the image
+        img = cv2.warpAffine(img, M, (nW, nH))
+        # when we have the sin cos of the trans, we can cal the segs
+        out_segments = []
+        boxes = []
+        mode = np.pi / 180 * mode
+        (h, w) = img.shape[:2]
+        (cX_n, cY_n) = (w // 2, h // 2)
+
+        for segment in segments:
+            segment = np.array(segment).reshape(-1, 2) - np.array([cX, cY])
+            out_seg = segment.copy()
+            out_seg[:, 0] = np.cos(mode) * segment[:, 0] - np.sin(mode) * segment[:, 1]
+            out_seg[:, 1] = np.cos(mode) * segment[:, 1] + np.sin(mode) * segment[:, 0]
+            out_seg += np.array([cX_n, cY_n])
+            x1, y1 = np.min(out_seg, 0)
+            x2, y2 = np.max(out_seg, 0)
+            boxes.append([x1, y1, x2, y2])
+            out_segments.append(list(out_seg.reshape(-1)))
+        boxes = np.array(boxes).astype(np.int32)
+        return img, boxes, out_segments, labels
 
 
 class ExtraAugmentation(object):
 
     def __init__(self,
+                 random_rotate=None,
                  photo_metric_distortion=None,
                  expand=None,
                  random_crop=None):
+        '''
+        a class to perform image augmentation, including rotate, distortion, expand and crop
+        :param random_rotate: dict() store parameters for rotate
+        :param photo_metric_distortion: dict() store parameters for distortion
+        :param expand: dict() store parameters for expand
+        :param random_crop: dict() store parameters for crop
+        '''
         self.transforms = []
+        if random_rotate is not None:
+            self.transforms.append(RandomRotate(**random_rotate))
         if photo_metric_distortion is not None:
             self.transforms.append(
                 PhotoMetricDistortion(**photo_metric_distortion))
@@ -253,6 +351,14 @@ class ExtraAugmentation(object):
             self.transforms.append(RandomCrop(**random_crop))
 
     def __call__(self, img, boxes, segments, labels):
+        '''
+        apply transform when calling
+        :param img: numpy.ndarray,(h,w,c)
+        :param boxes: numpy.ndarray,(n,4), x1,y1,x2,y2
+        :param segments: list(list),(n)(x),x is variant
+        :param labels: numpy.ndarray,(n)
+        :return:
+        '''
         img = img.astype(np.float32)
         for transform in self.transforms:
             img, boxes, segments, labels = transform(img, boxes, segments, labels)
@@ -260,10 +366,13 @@ class ExtraAugmentation(object):
 
 
 if __name__ == '__main__':
-    filename = '/data2/data/ctw1500/ctw1500_test.json'
-    imgp = '/data2/data/ctw1500/test/text_image/'
+    filename = '/data2/data/ART/art_val.json'
+    imgp = '/data2/data/ART/train_images/'
     res = COCO(filename)
     imgids = res.getImgIds()
+    randrot = {
+        'angles': [0, 45, 90, 135, 180],
+    }
     distort = {
         'brightness_delta': 32,
         'contrast_range': (0.5, 1.5),
@@ -273,14 +382,14 @@ if __name__ == '__main__':
     expand = {
         'mean': (0, 0, 0),
         'to_rgb': True,
-        'ratio_range': (1, 4)
+        'ratio_range': (1, 2)
     }
     randcrop = {
-        'min_ious': (0, 0.1, 0.3),#(0.1, 0.3, 0.5, 0.7, 0.9)
+        'min_ious': (0, 0.1, 0.3),  # (0.1, 0.3, 0.5, 0.7, 0.9)
         'min_crop_size': 0.3
     }
-    auth = ExtraAugmentation(distort, expand, randcrop)
-    for i in range(20):
+    auth = ExtraAugmentation(randrot, distort, expand, randcrop)  #
+    for i in range(10):
         imn = imgp + res.loadImgs(imgids[i])[0]['file_name']
         im = np.array(Image.open(imn).convert('RGB'))
         im = im[..., ::-1]  # convert to GBR
@@ -304,7 +413,6 @@ if __name__ == '__main__':
             cv2.rectangle(imout, (box[0], box[1]), (box[2], box[3]), (255, 0, 0), 1)
             cv2.polylines(imout, [seg], True, (0, 0, 255), 1)
         cv2.imwrite('a{}_0.jpg'.format(i), imout)
-
 
         im, boxes, segs, labels = auth(im, boxes, segs, labels)
         im_o = im.copy()
