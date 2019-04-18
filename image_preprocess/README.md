@@ -29,17 +29,20 @@ all the annotations in this datasets has 14 points for segmentations, but the co
 basic uses seen from the test examples in [main.py]( https://github.com/jichilen/image_processing_python_tools/blob/203667d0d2a8722433039f66db903d36efc2be70/image_preprocess/main.py#L12)
 
 ## Examples
-<img src='./demo/a0.jpg' style="zoom:100%">
-<img src='./demo/a0_0.jpg' style="zoom:100%">
-<img src='./demo/a1.jpg' style="zoom:100%">
-<img src='./demo/a1_0.jpg' style="zoom:100%">
-<img src='./demo/a2.jpg' style="zoom:100%">
-<img src='./demo/a2_0.jpg' style="zoom:100%">
-<img src='./demo/a3.jpg' style="zoom:100%">
-<img src='./demo/a3_0.jpg' style="zoom:100%">
-<img src='./demo/a4.jpg' style="zoom:100%">
-<img src='./demo/a4_0.jpg' style="zoom:100%">
-<img src='./demo/a5.jpg' style="zoom:100%">
-<img src='./demo/a5_0.jpg' style="zoom:100%">
-<img src='./demo/a6.jpg' style="zoom:100%">
-<img src='./demo/a6_0.jpg' style="zoom:100%">
+### some examples for polygon mask version
+<img src='./demo/a0.jpg' style="width:50%">
+<img src='./demo/a0_0.jpg' style="width:50%">
+<img src='./demo/a1.jpg' style="width:50%">
+<img src='./demo/a1_0.jpg' style="width:50%">
+<img src='./demo/a2.jpg' style="width:50%">
+<img src='./demo/a2_0.jpg' style="width:50%">
+<img src='./demo/a3.jpg' style="width:50%">
+<img src='./demo/a3_0.jpg' style="width:50%">
+<img src='./demo/a4.jpg' style="width:50%">
+<img src='./demo/a4_0.jpg' style="width:50%">
+<img src='./demo/a5.jpg' style="width:50%">
+<img src='./demo/a5_0.jpg' style="width:50%">
+<img src='./demo/a6.jpg' style="width:50%">
+<img src='./demo/a6_0.jpg' style="width:50%">
+### some examples for image mask version
+
