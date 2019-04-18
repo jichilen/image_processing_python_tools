@@ -323,8 +323,8 @@ class RandomRotate:
 class ExtraAugmentation_new(object):
 
     def __init__(self,
-                 random_rotate=None,
                  photo_metric_distortion=None,
+                 random_rotate=None,
                  expand=None,
                  random_crop=None):
         '''
@@ -335,11 +335,11 @@ class ExtraAugmentation_new(object):
         :param random_crop: dict() store parameters for crop
         '''
         self.transforms = []
-        if random_rotate is not None:
-            self.transforms.append(RandomRotate(**random_rotate))
         if photo_metric_distortion is not None:
             self.transforms.append(
                 PhotoMetricDistortion(**photo_metric_distortion))
+        if random_rotate is not None:
+            self.transforms.append(RandomRotate(**random_rotate))
         if expand is not None:
             self.transforms.append(Expand(**expand))
         if random_crop is not None:
@@ -365,14 +365,14 @@ if __name__ == '__main__':
     imgp = '/data2/data/ART/train_images/'
     res = COCO(filename)
     imgids = res.getImgIds()
-    randrot = {
-        'angles': [0, 45, 90, 135, 180],
-    }
     distort = {
         'brightness_delta': 32,
         'contrast_range': (0.5, 1.5),
         'saturation_range': (0.5, 1.5),
         'hue_delta': 18,
+    }
+    randrot = {
+        'angles': [0, 45, 90, 135, 180],
     }
     expand = {
         'mean': (0, 0, 0),
@@ -383,7 +383,7 @@ if __name__ == '__main__':
         'min_ious': (0, 0.1, 0.3),  # (0.1, 0.3, 0.5, 0.7, 0.9)
         'min_crop_size': 0.3
     }
-    auth = ExtraAugmentation_new(randrot, distort, expand, randcrop)  #
+    auth = ExtraAugmentation_new(distort, randrot, expand, randcrop)  #
     for i in range(10):
         imn = imgp + res.loadImgs(imgids[i])[0]['file_name']
         im = np.array(Image.open(imn).convert('RGB'))
@@ -408,7 +408,7 @@ if __name__ == '__main__':
             imout[ma > 0] = imout[ma > 0] * 0.5 + ma[ma > 0, None] * np.array([255, 0, 0]) * 0.5
         cv2.imwrite('a{}_0.jpg'.format(i), imout.astype(np.uint8))
         segs = [sum(masks)]
-        cv2.imwrite('a{}_0_s.jpg'.format(i), segs[0]*255)
+        cv2.imwrite('a{}_0_s.jpg'.format(i), segs[0] * 255)
         im, boxes, masks, segs, labels = auth(im, boxes, masks, segs, labels)
         im_o = im.copy()
         print(im_o.shape)

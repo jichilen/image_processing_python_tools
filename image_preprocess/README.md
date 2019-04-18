@@ -30,19 +30,50 @@ basic uses seen from the test examples in [main.py]( https://github.com/jichilen
 
 ## Examples
 ### some examples for polygon mask version
-<img src='./demo/a0.jpg' style="width:50%">
-<img src='./demo/a0_0.jpg' style="width:50%">
-<img src='./demo/a1.jpg' style="width:50%">
-<img src='./demo/a1_0.jpg' style="width:50%">
-<img src='./demo/a2.jpg' style="width:50%">
-<img src='./demo/a2_0.jpg' style="width:50%">
-<img src='./demo/a3.jpg' style="width:50%">
-<img src='./demo/a3_0.jpg' style="width:50%">
-<img src='./demo/a4.jpg' style="width:50%">
-<img src='./demo/a4_0.jpg' style="width:50%">
-<img src='./demo/a5.jpg' style="width:50%">
-<img src='./demo/a5_0.jpg' style="width:50%">
-<img src='./demo/a6.jpg' style="width:50%">
-<img src='./demo/a6_0.jpg' style="width:50%">
-### some examples for image mask version
+<table>
+  <tr>
+    <td><img src='./demo/a0.jpg' width=400px></td>
+    <td><img src='./demo/a0_0.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a1.jpg' width=400px></td>
+    <td><img src='./demo/a1_0.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a2.jpg' width=400px></td>
+    <td><img src='./demo/a2_0.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a3.jpg' width=400px></td>
+    <td><img src='./demo/a3_0.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a4.jpg' width=400px></td>
+    <td><img src='./demo/a4_0.jpg' width=400px></td>
+  </tr>
+</table>
 
+
+### some examples for image mask version
+<table>
+  <tr>
+    <td><img src='./demo/a0_1.jpg' width=400px></td>
+    <td><img src='./demo/a0_1_s.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a1_1.jpg' width=400px></td>
+    <td><img src='./demo/a1_1_s.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a1_1.jpg' width=400px></td>
+    <td><img src='./demo/a1_1_s.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a1_1.jpg' width=400px></td>
+    <td><img src='./demo/a1_1_s.jpg' width=400px></td>
+  </tr>
+  <tr>
+    <td><img src='./demo/a1_1.jpg' width=400px></td>
+    <td><img src='./demo/a1_1_s.jpg' width=400px></td>
+  </tr>
+</table>
