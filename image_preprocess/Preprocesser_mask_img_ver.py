@@ -14,7 +14,6 @@ import cv2
 from PIL import Image
 from shapely.geometry import Polygon
 
-
 def bbox_overlaps(bboxes1, bboxes2, mode='iou'):
     """Calculate the ious between each bbox of bboxes1 and bboxes2.
 
@@ -384,7 +383,7 @@ if __name__ == '__main__':
         'min_crop_size': 0.3
     }
     auth = ExtraAugmentation_new(distort, randrot, expand, randcrop)  #
-    for i in range(10):
+    for i in range(1):
         imn = imgp + res.loadImgs(imgids[i])[0]['file_name']
         im = np.array(Image.open(imn).convert('RGB'))
         im = im[..., ::-1]  # convert to GBR
